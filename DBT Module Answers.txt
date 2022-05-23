@@ -1,0 +1,131 @@
+DBT Module Answers
+
+-- Q1
+
+create table DEPT
+(
+DEPTNO int,
+DNAME varchar(15),
+LOC	varchar(10)
+);
+insert into DEPT values
+(10,'ACCOUNTING','NEW YORK'),
+(20,'RESEARCH','DALLAS'),
+(30,'SALES','CHICAGO'),
+(40,'OPERATIONS','BOSTON'); 
+select * from DEPT;
+
+----------- Q2
+
+create table EMP
+(
+EMPNO int,
+ENAME varchar(10),
+JOB	varchar(9),
+HIREDATE date,
+SAL	float,
+COMM float,
+DEPTNO	int
+);
+insert into EMP values
+(7839,'KING','MANAGER','1991-11-17',5000,NULL,10),
+(7698,'BLAKE','CLERK','1981-05-01',2850,NULL,30),
+(7782,'CLARK','MANAGER','1981-06-09',2450,NULL,10),
+(7566,'JONES','CLERK','1981-04-02',2975,NULL,20),
+(7654,'MARTIN','SALESMAN','1981-09-28',1250,1400,30),
+(7499,'ALLEN','SALESMAN','1981-02-20',1600,300,30);
+select * from EMP;
+
+-------------- Q3
+
+select * from EMP 
+where SAL between 2500 and 5000;
+
+-------------- Q4
+
+select ENAME from EMP 
+order by ENAME desc;
+
+----------- Q5
+
+select lower(JOB) as JOB_LOWERCASE from EMP;
+
+----------- Q6
+
+select ENAME,length(ENAME) as length_ENAME from EMP;
+
+----------- Q7
+
+select DEPTNO,count(*) from EMP 
+group by DEPTNO;
+
+----------- Q8
+
+select DEPT.DNAME,EMP.ENAME from EMP,DEPT 
+where EMP.DEPTNO = DEPT.DEPTNO ;
+
+----------- Q9
+
+select ename from EMP 
+where ENAME like '%AR%';
+
+----------- Q10
+
+select ENAME,(0.2*SAL) as HRA from EMP;
+
+
+-------------------------------------------------------------------------- SECTION 2
+
+-------- Q1
+
+create table tempp
+(
+str1 varchar(10),
+str2 varchar(10),
+result varchar(15)
+);
+select * from tempp;
+
+delimiter //
+create procedure PROC1(s1 varchar (10),s2 varchar (10))
+begin 
+		if (instr(s1,s2)>0 or instr(s2,s1)>0) then
+			insert into tempp values (s1,s2,"String Exists");
+		else 	
+			insert into tempp values (s1,s2,"Not Exists");
+		end if;
+        end; //
+        delimiter ;
+        call PROC1('DAC','CDAC');
+        SELECT * from tempp;
+        
+        ----------- Q2
+        
+        create table tempp2
+(
+a varchar(10),
+b varchar(10),
+c varchar(10),
+result varchar(15)
+);
+
+use latur;
+        delimiter //
+        create procedure traingle2 (x int,y int, z int)
+        begin
+				
+		declare T int;
+        set T = FUNC1(x,y,z);
+        if T then 
+					insert into tempp2 values (x,y,z,"VALID TRIANGLE");
+						else
+								insert into tempp2 values (x,y,z,"INVALID TRIANGLE");
+						end if;
+                        
+				end; //
+                delimiter ;
+                use latur;
+                call triangle2 (3,3,3);
+                call triangle2 (3,7,2);
+                select * from tempp2;
+        
